@@ -1,0 +1,8 @@
+::ng-deep .customers-table .table-new .p-icon {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+::ng-deep .customers-table .p-datatable-thead > tr > th {
+  @apply bg-t-header;
+}

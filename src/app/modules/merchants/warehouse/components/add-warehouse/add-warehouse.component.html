@@ -1,0 +1,480 @@
+<p-dialog
+  [header]="'warehouses.addNewWarehouse' | translate"
+  [(visible)]="visible"
+  (onHide)="onHide()"
+  [modal]="true"
+  [style]="{ width: '60vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '92vw' }"
+  class="add_warehouse_dialog"
+>
+  <!-- <ng-template pTemplate="header">
+    <div>
+      <h2 style="margin: 0;">Main Heading</h2>
+      <p style="margin: 0; font-size: 0.9em; color: #666;">This is the text under the heading.</p>
+    </div>
+  </ng-template> -->
+  <form [formGroup]="warehouseForm" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+      <!-- Warehouse Name -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.warehouseName" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'warehouses.warehouseForm.warehouseNamePlaceholder' | translate
+            "
+            formControlName="name"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('name'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('name')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('name')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('name')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.warehouseName" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Responsible Manager -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.responsibleManager" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'warehouses.warehouseForm.responsibleManagerPlaceholder'
+                | translate
+            "
+            formControlName="responsible_manger_name"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('responsible_manger_name'),
+              'border-stroke focus:outline-primary-light': !validateControl(
+                'responsible_manger_name'
+              )
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('responsible_manger_name')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('responsible_manger_name')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.responsibleManager" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Phone Number 1 -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.phoneNumber1" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'warehouses.warehouseForm.phoneNumber1Placeholder' | translate
+            "
+            maxlength="11"
+            formControlName="phone"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('phone'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('phone')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('phone')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('phone')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          <span
+            class="block"
+            *ngIf="warehouseForm.get('phone')?.errors?.['required']"
+            >{{ "auth.register.mobileNumberErrorMsg" | translate }}</span
+          >
+          <span
+            class="block"
+            *ngIf="warehouseForm.get('phone')?.errors?.['pattern']"
+            >{{ "auth.register.patternNumberErrorMsg" | translate }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Phone Number 2 -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.phoneNumber2" | translate }}
+        </label>
+        <div class="relative">
+          <input
+            maxlength="11"
+            formControlName="phone2"
+            [placeholder]="
+              'warehouses.warehouseForm.phoneNumber2Placeholder' | translate
+            "
+            class="w-full font-normal border-stroke bg-white border rounded-[8px] px-4 py-3 focus:outline-primary-light placeholder:text-hs-text h-[40px]"
+          />
+        </div>
+        <div
+          *ngIf="warehouseForm.get('phone2')?.errors?.['pattern'] && warehouseForm.get('phone2')?.touched && warehouseForm.get('phone2')?.dirty"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          <span
+            class="block"
+            *ngIf="warehouseForm.get('phone2')?.errors?.['pattern']"
+            >{{ "auth.register.patternNumberErrorMsg" | translate }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.email" | translate }}
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'warehouses.warehouseForm.emailPlaceholder' | translate
+            "
+            formControlName="email"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('email'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('email')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('email')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('email')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          <span
+            class="block"
+            *ngIf="warehouseForm.get('email')?.errors?.['required']"
+            >{{ "auth.register.emailErrorMsg" | translate }}</span
+          >
+          <span
+            class="block"
+            *ngIf="warehouseForm.get('email')?.errors?.['email']"
+          >
+            {{ "auth.register.emailInvalidErrorMsg" | translate }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.status" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            formControlName="status"
+            [options]="statuses"
+            [placeholder]="
+              'warehouses.warehouseForm.statusPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger': validateControl('status'),
+              'border-stroke': !validateControl('status')
+            }"
+            class="w-full border rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('status')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('status')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.status" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.location" | translate }}
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'warehouses.warehouseForm.locationPlaceholder' | translate
+            "
+            formControlName="location"
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('location'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('location')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text indent-5 h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('location')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+          <img
+            src="assets/icons/link.svg"
+            alt="link"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+        <div
+          *ngIf="validateControl('location')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.location" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.date" | translate }} *
+        </label>
+        <div class="relative w-full">
+          <p-calendar
+            [placeholder]="
+              'warehouses.warehouseForm.datePlaceholder' | translate
+            "
+            formControlName="created_date_at"
+            class="w-full indent-5 calender-full"
+            inputStyleClass="my-custom-calendar-border"
+          ></p-calendar>
+          <i
+            *ngIf="validateControl('created_date_at')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+          <img
+            src="assets/icons/calendar.svg"
+            alt="calender"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+        <div
+          *ngIf="validateControl('created_date_at')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.date" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Region -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.country" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="countries"
+            formControlName="country_id"
+            optionLabel="name"
+            [placeholder]="
+              'warehouses.warehouseForm.countryPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('country_id'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('country_id')
+            }"
+            class="w-full rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('country_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('country_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.country" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.region" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="governorates"
+            formControlName="governorate_id"
+            optionLabel="name"
+            [placeholder]="
+              'warehouses.warehouseForm.regionPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('governorate_id'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('governorate_id')
+            }"
+            class="w-full rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('governorate_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('governorate_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.region" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.city" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="cities"
+            formControlName="city_id"
+            optionLabel="name"
+            [placeholder]="
+              'warehouses.warehouseForm.cityPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('city_id'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('city_id')
+            }"
+            class="w-full rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('city_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('city_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "warehouses.warehouseForm.city" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Area -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.area" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="areas"
+            [placeholder]="
+              'warehouses.warehouseForm.areaPlaceholder' | translate
+            "
+            optionLabel="name"
+            formControlName="area_id"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+        </div>
+      </div>
+
+      <!-- Full Address -->
+      <div class="flex flex-col gap-2 md:col-span-2">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.fullAddress" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'warehouses.warehouseForm.fullAddressPlaceholder' | translate
+            "
+            formControlName="address"
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('address'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('address')
+            }"
+            class="w-full bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('address')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('address')"
+          class="text-primary-danger text-[12px] font-medium"
+        >
+          {{ "warehouses.warehouseForm.fullAddress" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <section class="flex justify-end mt-10 gap-4 border-t border-stroke p-4">
+      <button
+        (click)="visible = false"
+        class="text-primary bg-white border-stroke border text-[14px] font-medium px-4 py-3 rounded-[6px] items-center"
+      >
+        <span>{{ "common.cancel" | translate }}</span>
+      </button>
+      <button
+        type="submit"
+        class="bg-primary text-white px-4 py-3 flex gap-2 text-[14px] font-medium rounded-[6px] items-center"
+      >
+        <span *ngIf="!warehouseId">{{
+          "warehouses.addNewWarehouse" | translate
+        }}</span>
+        <span *ngIf="warehouseId">{{
+          "warehouses.editWarehouse" | translate
+        }}</span>
+        <img src="assets/icons/plus.svg" alt="plus" />
+      </button>
+    </section>
+  </form>
+</p-dialog>

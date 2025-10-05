@@ -1,0 +1,295 @@
+<div class="px-3 bg-white rounded-2xl flex flex-col h-full">
+  <!-- Custom Accordion Implementation -->
+  <div class="accordion-container">
+    <!-- Customer Details Panel -->
+    <div class="accordion-panel mb-3">
+      <button
+        class="accordion-header flex items-center justify-between w-full pb-4 mt-[5px] font-medium text-start"
+        [attr.aria-expanded]="openPanels[0]"
+      >
+        <div class="flex items-center gap-4">
+          <span class="text-p-text text-[20px] font-bold">{{
+            "customers.customerTable.customerDetails" | translate
+          }}</span>
+          <i
+            class="pi pi-pen-to-square text-[22px] text-hs-text"
+            (click)="onEditClick()"
+            title="Edit Customer"
+          ></i>
+        </div>
+        <i
+          class="pi"
+          (click)="togglePanel(0)"
+          [ngClass]="{
+            'pi-chevron-down': !openPanels[0],
+            'pi-chevron-up': openPanels[0]
+          }"
+        ></i>
+      </button>
+
+      <div class="accordion-content" [class.hidden]="!openPanels[0]">
+        <div class="py-4 border-t" *ngIf="customerDetails">
+          <table class="w-full border-collapse text-sm">
+            <tbody>
+              <tr class="border-b">
+                <td
+                  class="font-medium py-2 text-[1rem] leading-[120%] text-p-text"
+                >
+                  {{ "customers.customerTable.customerName" | translate }}
+                </td>
+                <td
+                  class="py-2 flex items-center gap-2 text-p-text text-[14px] font-normal"
+                >
+                  <i class="pi pi-user text-hs-text"></i>
+                  {{ customerDetails.name }}
+                </td>
+              </tr>
+
+              <tr class="border-b bg-screen">
+                <td
+                  class="font-medium py-2 text-[1rem] leading-[120%] text-p-text"
+                >
+                  {{ "customers.customerTable.email" | translate }}
+                </td>
+                <td
+                  class="py-2 flex items-center gap-2 text-p-text text-[14px] font-normal"
+                >
+                  <i class="pi pi-envelope text-hs-text"></i
+                  >{{ customerDetails.email }}
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td
+                  class="font-medium py-2 text-[1rem] leading-[120%] text-p-text"
+                >
+                  {{ "customers.customerTable.phoneNumber" | translate }}
+                </td>
+                <td
+                  class="py-2 flex items-start gap-2 text-p-text text-[14px] font-normal"
+                >
+                  <i class="pi pi-phone text-hs-text"></i>
+                  <div class="flex flex-col">
+                    <!-- <span
+                      *ngFor="let phone of customerDetails?.managerPhones"
+                      >{{ phone }}</span
+                    > -->
+                    <span *ngIf="customerDetails.phone">{{
+                      customerDetails.phone
+                    }}</span>
+                    <span *ngIf="customerDetails.phone2">{{
+                      customerDetails.phone2
+                    }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr class="border-b bg-screen">
+                <td
+                  class="font-medium py-2 text-[1rem] leading-[120%] text-p-text"
+                >
+                  {{ "customers.customerTable.address" | translate }}
+                </td>
+                <td
+                  class="py-2 flex items-start gap-2 text-p-text text-[14px] font-normal"
+                >
+                  <i class="pi pi-map-marker text-hs-text"></i>
+                  <div class="flex flex-col">
+                    <span>{{ customerDetails.address }}</span>
+                    <!-- <span class="text-hs-text">{{
+                      customerDetails.region
+                    }}</span> -->
+                  </div>
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td
+                  class="font-medium py-2 text-[1rem] leading-[120%] text-p-text"
+                >
+                  Order Summary
+                </td>
+                <td
+                  class="py-2 flex items-center gap-2 text-p-text text-[14px] font-normal"
+                >
+                  <!-- <i class="pi pi-shopping-cart text-hs-text"></i>
+                  {{ customerDetails }} orders | {{ customerDetails }} EGP -->
+                </td>
+              </tr>
+              <tr class="border-b bg-screen">
+                <td
+                  class="font-medium py-2 text-[1rem] leading-[120%] text-p-text"
+                >
+                  {{ "customers.customerTable.qualityScore" | translate }}
+                </td>
+                <td
+                  class="py-2 flex items-center gap-2 text-p-text text-[14px] font-normal"
+                >
+                  <!-- <i class="pi pi-shopping-cart text-hs-text"></i>
+                  {{ customerDetails }} orders | {{ customerDetails }} EGP -->
+                  <div class="flex gap-2 w-full items-center">
+                    <img
+                      src="assets/icons/customer/beat.svg"
+                      alt="Quality Icon"
+                    />
+
+                    <div
+                      class="w-full bg-stroke rounded-[16px] h-1.5 max-w-[120px]"
+                    >
+                      <div
+                        [ngClass]="{
+                          'bg-[#F44336]':
+                            customerDetails.quality.percentage > 0 &&
+                            customerDetails.quality.percentage <= 29,
+                          'bg-[#FFA940]':
+                            customerDetails.quality.percentage >= 40 &&
+                            customerDetails.quality.percentage <= 49,
+                          'bg-[#1773B5]':
+                            customerDetails.quality.percentage > 49
+                        }"
+                        class="h-1.5 rounded-[16px]"
+                        [style]="
+                          'width: ' + customerDetails.quality.percentage + '%'
+                        "
+                      ></div>
+                    </div>
+                    <span>{{ customerDetails.quality.percentage }}%</span>
+                    <span
+                      class="bg-[#D2E9F9] text-[#1773B5] text-[14px] rounded-[4px] py-[6px] px-1"
+                      >{{
+                        customerDetails.reverse_orders.type | titlecase
+                      }}</span
+                    >
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Shipments Panel -->
+    <div class="accordion-panel mb-6">
+      <button
+        class="accordion-header flex items-center justify-between w-full pb-4 font-medium text-start"
+        [attr.aria-expanded]="openPanels[1]"
+      >
+        <div class="flex items-center gap-4">
+          <span class="text-p-text text-[20px] font-bold"
+            >Recent Shipments</span
+          >
+          <i class="pi pi-pen-to-square text-hs-text text-[22px]"></i>
+        </div>
+        <i
+          class="pi"
+          (click)="togglePanel(1)"
+          [ngClass]="{
+            'pi-chevron-down': !openPanels[1],
+            'pi-chevron-up': openPanels[1]
+          }"
+        ></i>
+      </button>
+      <div class="accordion-content" [class.hidden]="!openPanels[1]">
+        <div class="border-t">
+          <p-table
+            [value]="recentShipments"
+            [tableStyle]="{
+              'min-width': '100%',
+              'margin-top': '16px',
+              border: '1px solid #E6E6E6',
+              'border-radius': '12px'
+            }"
+            responsiveLayout="scroll"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th
+                  class="rounded-ss-[12px]"
+                  pSortableColumn="orderNumber"
+                  style="background-color: #f4f4f4"
+                >
+                  Order Number <p-sortIcon field="orderNumber"></p-sortIcon>
+                </th>
+                <th pSortableColumn="value" style="background-color: #f4f4f4">
+                  Value <p-sortIcon field="value"></p-sortIcon>
+                </th>
+                <th
+                  pSortableColumn="paymentMethod"
+                  style="background-color: #f4f4f4"
+                >
+                  Payment Method
+                  <p-sortIcon field="paymentMethod"></p-sortIcon>
+                </th>
+                <th pSortableColumn="status" style="background-color: #f4f4f4">
+                  Status <p-sortIcon field="status"></p-sortIcon>
+                </th>
+                <th pSortableColumn="courier" style="background-color: #f4f4f4">
+                  Courier <p-sortIcon field="courier"></p-sortIcon>
+                </th>
+                <th
+                  pSortableColumn="city"
+                  class="rounded-se-[12px]"
+                  style="background-color: #f4f4f4"
+                >
+                  City <p-sortIcon field="city"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+              <tr>
+                <!-- أول td -->
+                <td
+                  [ngClass]="{
+                    'rounded-es-[12px]': rowIndex === recentShipments.length - 1
+                  }"
+                >
+                  <i class="pi pi-search mr-2"></i>{{ row.orderNumber }}
+                </td>
+
+                <td>{{ row.value }}</td>
+                <td>
+                  <i class="pi pi-wallet mr-2"></i>{{ row.paymentMethod }}
+                </td>
+                <td>
+                  <span
+                    class="px-2 py-1 rounded text-xs font-medium"
+                    [ngClass]="{
+                      'bg-[#E8F5E9] text-[#4CAF50]': row.status === 'Delivered',
+                      'bg-[#FFEBEE] text-[#D32F2F]': row.status === 'Canceled',
+                      'bg-[#E3F2FD] text-[#1976D2]': row.status === 'In Transit'
+                    }"
+                    >{{ row.status }}</span
+                  >
+                </td>
+                <td><i class="pi pi-truck mr-2"></i>{{ row.courier }}</td>
+
+                <!-- آخر td -->
+                <td
+                  [ngClass]="{
+                    'rounded-ee-[12px]': rowIndex === recentShipments.length - 1
+                  }"
+                >
+                  <i class="pi pi-map-marker mr-2"></i>{{ row.city }}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+
+  <footer class="mt-auto">
+    <div
+      class="bg-white mt-[10px] border-t z-10 px-4 pt-4 flex items-center justify-between"
+    >
+      <div>
+        <!-- Last Updated: <span>{{ customerDetails?.primary }}</span> -->
+      </div>
+      <button (click)="onDeleteClick()" class="text-red-600 hover:text-red-800">
+        <i class="pi pi-trash"></i>
+      </button>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,9 @@
+/* global styles.css */
+::ng-deep .warehouses-table .table-new .p-icon {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+::ng-deep .warehouses-table .p-datatable-thead > tr > th {
+  @apply bg-t-header;
+}

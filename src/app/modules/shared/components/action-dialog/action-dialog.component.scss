@@ -1,0 +1,13 @@
+::ng-deep .action-dialog .p-dialog-content {
+  padding: 0 !important;
+}
+::ng-deep .action-dialog .p-dialog-header {
+  padding: 0 !important;
+  padding: 1rem 2rem !important;
+}
+.action-dialog .p-button.cancel {
+  @apply bg-white border-primary text-primary hover:bg-primary-hover hover:text-white;
+}
+.action-dialog .p-button.primary-btn {
+  @apply bg-primary border-primary text-white hover:bg-primary-hover hover:border-primary-hover;
+}

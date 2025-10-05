@@ -1,0 +1,65 @@
+/* ثيمات التطبيق */
+:root {
+  color-scheme: light;
+
+  --primary-color: #092D47;
+  --primary-danger: #E65248;
+  --primary-light: #1773B5;
+  --primary-lighter: #D2E9F9;
+  --primary-hover: #0E4166;
+  --p-text: #231F20;
+  --p-text-2: #202224;
+  --hs-text: #666666;
+  --s-text: #999999;
+  --screen: #F7F7F7;
+  --white: #FFFFFF;
+  --stroke: #E6E6E6;
+  --h-stroke: #CCCCCC;
+  --hover: #F2F2F2;
+  --t-header: #F4F4F4;
+  --success: #379587;
+  --success-bg: #DAF1EE;
+  --star-bg: #FFEACE;
+}
+
+/* الثيم الداكن */
+.dark {
+  color-scheme: dark;
+  --primary-color: #55acee;
+  --primary-danger: #ef5350;
+  --primary-light: #81c784;
+  --primary-hover: #6bc2f0;
+  --p-text: #e0e0e0;
+  --hs-text: #bdbdbd;
+  --s-text: #9e9e9e;
+  --screen: #121212;
+  --white: #212121;
+  --stroke: #333333;
+  --h-stroke: #555555;
+  --hover: #2a2a2a;
+  --t-header: #1e1e1e;
+}
+
+body {
+  @apply bg-[var(--background-color)] text-[var(--text-primary)];
+}
+
+/* تخصيص الألوان للعناصر المشتركة */
+.btn-primary {
+  @apply bg-[var(--primary-color)] hover:bg-[var(--primary-hover)] text-white;
+}
+
+.card {
+  @apply bg-[var(--surface-color)] border border-[var(--border-color)];
+}
+
+/* دعم الاتجاه RTL */
+[dir="rtl"] {
+  .space-x-reverse> :not([hidden])~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+
+  .rtl\:space-x-reverse> :not([hidden])~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+}

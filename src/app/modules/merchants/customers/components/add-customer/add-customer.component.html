@@ -1,0 +1,414 @@
+<p-dialog
+  [header]="'customers.addNewCustomer' | translate"
+  [(visible)]="visible"
+  (onHide)="onHide()"
+  [modal]="true"
+  [style]="{ width: '60vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '92vw' }"
+  class="add_customer_dialog"
+>
+  <!-- <ng-template pTemplate="header">
+    <div>
+      <h2 style="margin: 0;">Main Heading</h2>
+      <p style="margin: 0; font-size: 0.9em; color: #666;">This is the text under the heading.</p>
+    </div>
+  </ng-template> -->
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+      <!-- Customer Name -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.fullName" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'customers.customerForm.fullNamePlaceholder' | translate
+            "
+            formControlName="name"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('name'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('name')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('name')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('name')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.customerName" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.email" | translate }}
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'customers.customerForm.emailPlaceholder' | translate
+            "
+            formControlName="email"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('email'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('email')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('email')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('email')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          <span
+            class="block"
+            *ngIf="customerForm.get('email')?.errors?.['required']"
+            >{{ "auth.register.emailErrorMsg" | translate }}</span
+          >
+          <span
+            class="block"
+            *ngIf="customerForm.get('email')?.errors?.['email']"
+          >
+            {{ "auth.register.emailInvalidErrorMsg" | translate }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Phone Number 1 -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.phoneNumber1" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'customers.customerForm.phoneNumber1Placeholder' | translate
+            "
+            maxlength="11"
+            formControlName="phone"
+            [ngClass]="{
+              'border-primary-danger  focus:outline-primary-danger':
+                validateControl('phone'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('phone')
+            }"
+            class="w-full font-normal bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('phone')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('phone')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          <span
+            class="block"
+            *ngIf="customerForm.get('phone')?.errors?.['required']"
+            >{{ "auth.register.mobileNumberErrorMsg" | translate }}</span
+          >
+          <span
+            class="block"
+            *ngIf="customerForm.get('phone')?.errors?.['pattern']"
+            >{{ "auth.register.patternNumberErrorMsg" | translate }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Phone Number 2 -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.phoneNumber2" | translate }}
+        </label>
+        <div class="relative">
+          <input
+            maxlength="11"
+            formControlName="phone2"
+            [placeholder]="
+              'customers.customerForm.phoneNumber2Placeholder' | translate
+            "
+            class="w-full font-normal border-stroke bg-white border rounded-[8px] px-4 py-3 focus:outline-primary-light placeholder:text-hs-text h-[40px]"
+          />
+        </div>
+        <div
+          *ngIf="customerForm.get('phone2')?.errors?.['pattern'] && customerForm.get('phone2')?.touched && customerForm.get('phone2')?.dirty"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          <span
+            class="block"
+            *ngIf="customerForm.get('phone2')?.errors?.['pattern']"
+            >{{ "auth.register.patternNumberErrorMsg" | translate }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.date" | translate }} *
+        </label>
+        <div class="relative w-full">
+          <p-calendar
+            [placeholder]="'customers.customerForm.datePlaceholder' | translate"
+            formControlName="created_date_at"
+            class="w-full indent-5 calender-full"
+            inputStyleClass="my-custom-calendar-border"
+          ></p-calendar>
+          <i
+            *ngIf="validateControl('created_date_at')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+          <img
+            src="assets/icons/calendar.svg"
+            alt="calender"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+        <div
+          *ngIf="validateControl('created_date_at')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.date" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.status" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            formControlName="status"
+            [options]="statuses"
+            [placeholder]="
+              'customers.customerForm.statusPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger': validateControl('status'),
+              'border-stroke': !validateControl('status')
+            }"
+            class="w-full border rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('status')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('status')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.status" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+      <!-- Country -->
+
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.country" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="countries"
+            formControlName="country_id"
+            optionLabel="name"
+            [placeholder]="
+              'customers.customerForm.countryPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('country_id'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('country_id')
+            }"
+            class="w-full rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('country_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('country_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.country" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+      <!-- Region -->
+
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.region" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="governorates"
+            formControlName="governorate_id"
+            optionLabel="name"
+            [placeholder]="
+              'customers.customerForm.regionPlaceholder' | translate
+            "
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('governorate_id'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('governorate_id')
+            }"
+            class="w-full rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('governorate_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('governorate_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.region" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+      <!-- City -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.city" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="cities"
+            formControlName="city_id"
+            optionLabel="name"
+            [placeholder]="'customers.customerForm.cityPlaceholder' | translate"
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('city_id'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('city_id')
+            }"
+            class="w-full rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('city_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('city_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.city" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+      <!-- Area -->
+      <div class="flex flex-col gap-2 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.area" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="areas"
+            [placeholder]="'customers.customerForm.areaPlaceholder' | translate"
+            optionLabel="name"
+            formControlName="area_id"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+          <i
+            *ngIf="validateControl('area_id')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('area_id')"
+          class="text-primary-danger text-[12px] font-medium ms-2"
+        >
+          {{ "customers.customerForm.area" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+
+      <!-- Full Address -->
+      <div class="flex flex-col gap-2 md:col-span-2">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.fullAddress" | translate }} *
+        </label>
+        <div class="relative">
+          <input
+            [placeholder]="
+              'customers.customerForm.fullAddressPlaceholder' | translate
+            "
+            formControlName="address"
+            [ngClass]="{
+              'border-primary-danger focus:outline-primary-danger':
+                validateControl('address'),
+              'border-stroke focus:outline-primary-light':
+                !validateControl('address')
+            }"
+            class="w-full bg-white border rounded-[8px] px-4 py-3 placeholder:text-hs-text h-[40px]"
+          />
+          <i
+            *ngIf="validateControl('address')"
+            class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+          ></i>
+        </div>
+        <div
+          *ngIf="validateControl('address')"
+          class="text-primary-danger text-[12px] font-medium"
+        >
+          {{ "customers.customerForm.fullAddress" | translate }}
+          {{ "common.required" | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <section class="flex justify-end mt-10 gap-4 border-t border-stroke p-4">
+      <button
+        (click)="visible = false"
+        class="text-primary bg-white border-stroke border text-[14px] font-medium px-4 py-3 rounded-[6px] items-center"
+      >
+        <span>{{ "common.cancel" | translate }}</span>
+      </button>
+      <button
+        type="submit"
+        class="bg-primary text-white px-4 py-3 flex gap-2 text-[14px] font-medium rounded-[6px] items-center"
+      >
+        <span *ngIf="!customerId">{{
+          "customers.addNewCustomer" | translate
+        }}</span>
+        <span *ngIf="customerId">{{
+          "customers.editCustomer" | translate
+        }}</span>
+        <img src="assets/icons/plus.svg" alt="plus" />
+      </button>
+    </section>
+  </form>
+</p-dialog>

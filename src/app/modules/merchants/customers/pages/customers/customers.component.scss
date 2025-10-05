@@ -1,0 +1,22 @@
+::ng-deep :root {
+  --p-breadcrumb-item-icon-color: #231f20 !important;
+}
+
+::ng-deep :root {
+  --p-breadcrumb-item-color: #231f20 !important;
+}
+
+::ng-deep :root {
+  --p-breadcrumb-padding: 0 !important;
+}
+
+::ng-deep .customer-header .p-button {
+  background-color: #092d47 !important;
+  border-color: #092d47 !important;
+  font-size: 16px !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .p-button .pi {
+  font-size: 10px;
+}

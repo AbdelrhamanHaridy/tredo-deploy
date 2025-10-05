@@ -1,0 +1,81 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '640px', maxWidth: '95%' }"
+  [dismissableMask]="true"
+  (onHide)="onCancel()"
+  class="action-dialog"
+>
+  <!-- Header -->
+  <ng-template pTemplate="header">
+    <div class="flex flex-col">
+      <span class="text-[28px] font-medium text-gray-800">{{
+        config?.title
+      }}</span>
+      <span
+        class="text-[16px] leading-[120%] font-normal tracking-0 text-hs-text"
+        >{{ "warehouses.changeStatus.selectNewStatus" | translate }}</span
+      >
+    </div>
+  </ng-template>
+
+  <!-- Content -->
+  <div class="flex items-center gap-3 p-8 mb-3 border-y border-gray-200">
+    <div
+      class="p-3 rounded-[8px] bg-star-bg w-[56px] h-[56px] justify-center items-center flex"
+    >
+      <!-- <i
+        class="text-[32px]"
+        [ngClass]="[
+          config?.icon || 'pi pi-info-circle',
+          'text-2xl',
+          config?.type === 'delete'
+            ? 'text-red-600'
+            : config?.type === 'primary'
+            ? 'text-yellow-500'
+            : 'text-blue-600'
+        ]"
+      ></i> -->
+      <img
+        src="assets/icons/star.png"
+        alt="icon"
+        class="w-8 h-8 object-contain"
+      />
+    </div>
+
+    <p class="text-p-text text-[1.5rem] font-medium leading-[120%] p-1">
+      {{ config?.message }}
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <button
+        pButton
+        type="button"
+        class="px-4 py-2 rounded-md border text-sm cancel"
+        (click)="onCancel()"
+      >
+        {{ config?.cancelText || "Cancel" }}
+      </button>
+
+      <button
+        pButton
+        type="button"
+        [ngClass]="{
+          'bg-red-600 hover:bg-red-700 text-white': config?.type === 'delete',
+          'bg-yellow-500 hover:bg-yellow-600 text-white':
+            config?.type === 'primary',
+          'bg-blue-600 hover:bg-blue-700 text-white':
+            config?.type === 'status' || config?.type === 'custom'
+        }"
+        class="px-4 py-2 rounded-md text-sm font-medium primary-btn"
+        (click)="onConfirm()"
+      >
+        {{ config?.confirmText || "Confirm" }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

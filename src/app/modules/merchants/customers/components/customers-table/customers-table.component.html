@@ -1,0 +1,431 @@
+<div class="customers-table px-8 py-6">
+  <section class="flex flex-wrap justify-between items-center pb-4 gap-2">
+    <div
+      class="border border-stroke py-2 px-4 rounded-[6px] flex items-center gap-2 h-[40px] cursor-pointer"
+      (click)="openFilters()"
+    >
+      <i
+        class="pi pi-chevron-down text-primary"
+        [ngClass]="{
+          'rotate-180': showFilters,
+          'rotate-0': !showFilters
+        }"
+      ></i>
+      <span
+        class="text-primary font-medium text-[14px] leading-[120%] tracking-[0px]"
+        >{{ "customers.customerTable.showFilters" | translate }}</span
+      >
+    </div>
+    <div class="max-w-[280px] w-full relative h-[40px]">
+      <input
+        class="border indent-8 border-stroke w-full py-3 h-full px-4 rounded-[6px] flex items-center gap-2 focus:outline-none placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%] tracking-[0px]"
+        placeholder="{{
+          'customers.customerTable.searchCustomers' | translate
+        }}"
+        [ngModel]="searchParams.search"
+        (ngModelChange)="onSearchInput($event)"
+      />
+      <img
+        src="assets/icons/search.svg"
+        class="absolute top-1/2 start-4 -translate-y-1/2"
+      />
+    </div>
+  </section>
+  <section
+    *ngIf="showFilters"
+    class="mb-4 border border-stroke rounded-[8px] bg-white"
+  >
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 p-4 gap-y-6 border-b border-stroke pb-4"
+    >
+      <!-- Name -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="customerName"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "customers.customerSearch.name" | translate }}</label
+        >
+        <input
+          id="customerName"
+          type="text"
+          [(ngModel)]="searchParams.search"
+          class="border border-stroke rounded-[6px] py-2 px-3 focus:outline-primary-light placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%]"
+          placeholder="{{
+            'customers.customerSearch.searchByName' | translate
+          }}"
+        />
+      </div>
+      <!-- Phone Number -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="phoneNumber"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "customers.customerSearch.phoneNumber" | translate }}</label
+        >
+        <input
+          id="phoneNumber"
+          [(ngModel)]="searchParams.phone"
+          type="text"
+          class="border border-stroke rounded-[6px] py-2 px-3 focus:outline-primary-light placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%]"
+          placeholder="{{
+            'customers.customerSearch.searchByPhone' | translate
+          }}"
+        />
+      </div>
+      <!-- Orders -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="orders"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "customers.customerSearch.orders" | translate }}</label
+        >
+        <input
+          id="orders"
+          [(ngModel)]="searchParams.orders"
+          type="text"
+          class="border border-stroke rounded-[6px] py-2 px-3 focus:outline-primary-light placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%]"
+          placeholder="{{
+            'customers.customerSearch.searchByOrders' | translate
+          }}"
+        />
+      </div>
+      <!-- From Date -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="fromDate"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "customers.customerSearch.fromDate" | translate }}</label
+        >
+        <!-- [(ngModel)]="searchParams.from_date" -->
+        <div class="w-full relative">
+          <p-calendar
+            [placeholder]="'customers.customerSearch.selectDate' | translate"
+            class="w-full calender-full"
+            [(ngModel)]="searchParams.created_date_at"
+            dateFormat="dd-mm-yy"
+            inputStyleClass="my-custom-calendar-border"
+          ></p-calendar>
+          <img
+            src="assets/icons/calendar.svg"
+            alt="calender"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+      </div>
+      <!-- To Date -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="toDate"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "customers.customerSearch.toDate" | translate }}</label
+        >
+        <div class="w-full relative">
+          <p-calendar
+            [(ngModel)]="searchParams.to_date"
+            dateFormat="dd-mm-yy"
+            [placeholder]="'customers.customerSearch.selectDate' | translate"
+            class="w-full calender-full"
+            inputStyleClass="my-custom-calendar-border"
+          ></p-calendar>
+          <img
+            src="assets/icons/calendar.svg"
+            alt="calender"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+      </div>
+      <!-- Area -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.area" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="areas"
+            [(ngModel)]="searchParams.area_id"
+            [placeholder]="'customers.customerForm.areaPlaceholder' | translate"
+            optionLabel="name"
+            optionValue="id"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+        </div>
+      </div>
+      <!-- Regions (Governator) -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerForm.region" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="governorates"
+            [(ngModel)]="searchParams.governorate_id"
+            [placeholder]="
+              'customers.customerForm.regionPlaceholder' | translate
+            "
+            optionLabel="name"
+            optionValue="id"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "customers.customerSearch.status" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="statuses"
+            [(ngModel)]="searchParams.status"
+            [placeholder]="'customers.customerSearch.selectStatus' | translate"
+            optionLabel="name"
+            optionValue="value"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-end py-4 px-6 gap-4">
+      <button
+        (click)="onClear()"
+        class="bg-white border border-stroke text-primary flex gap-2 font-medium text-[14px] leading-[120%] px-4 py-2 rounded-[6px]"
+      >
+        <img src="assets/icons/filter.svg" class="w-4 h-4" />
+        <span>{{ "common.clear" | translate }}</span>
+      </button>
+      <button
+        (click)="onSearch()"
+        class="bg-primary border border-primary text-white flex font-medium text-[14px] gap-2 leading-[120%] px-4 py-2 rounded-[6px]"
+      >
+        <i class="pi pi-search text-white -mt-[2px]"></i>
+        <span>{{ "common.search" | translate }}</span>
+      </button>
+    </div>
+  </section>
+  <p-table
+    #dt
+    [value]="customers"
+    [tableStyle]="{
+      'min-width': '100%',
+      border: '1px solid #E6E6E6'
+    }"
+    responsiveLayout="scroll"
+    class="table-new"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">
+          <div class="flex gap-1">#ID <p-sortIcon field="id"></p-sortIcon></div>
+        </th>
+        <th
+          pSortableColumn="name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "customers.customerTable.name" | translate }}
+            <p-sortIcon field="name"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="governorate.name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1">
+            {{ "customers.customerTable.address" | translate }}
+            <p-sortIcon field="governorate.name"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="orders"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "customers.customerTable.orders" | translate }}
+            <p-sortIcon field="orders"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="quality"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "customers.customerTable.quality" | translate }}
+            <p-sortIcon field="quality"></p-sortIcon>
+          </div>
+        </th>
+
+        <th
+          pSortableColumn="reverseOrders"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "customers.customerTable.reverseOrders" | translate }}
+            <p-sortIcon field="reverseOrders"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="status"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "customers.customerTable.status" | translate }}
+            <p-sortIcon field="status"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="created_date_at"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1">
+            {{ "customers.customerTable.date" | translate }}
+            <p-sortIcon field="created_date_at"></p-sortIcon>
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row>
+      <tr
+        [routerLink]="[
+          '/merchants/customers',
+          { outlets: { customer: [row.id] } }
+        ]"
+        class="hover:bg-gray-200 cursor-pointer"
+      >
+        <td class="text-[12px] text-p-text">{{ row.id }}</td>
+        <td class="text-[12px] text-p-text whitespace-nowrap">
+          {{ row.name }}
+          <div
+            class="flex text-[12px] font-normal text-hs-text flex-col mt-[2px]"
+          >
+            <div class="flex items-center">
+              <i class="pi pi-copy mr-1"></i> {{ row.phone }}
+            </div>
+            <div class="flex items-center" *ngIf="row.phone2">
+              <i class="pi pi-copy mr-1"></i> {{ row?.phone2 }}
+            </div>
+          </div>
+        </td>
+        <td class="text-[12px] text-p-text">
+          {{ row.country?.name }}
+          <ng-container *ngIf="row.governorate">
+            <span class="mb-0 flex items-center text-hs-text">
+              <i class="pi pi-map-marker mr-1"></i> {{ row.governorate.name }}
+            </span>
+          </ng-container>
+        </td>
+        <td class="text-[12px]">
+          <div class="flex flex-col gap-1">
+            <div class="text-p-text font-medium">
+              <!-- {{ row.responsible_manger_name }} -->
+              -
+            </div>
+          </div>
+        </td>
+        <td class="text-[12px] text-p-text">
+          <div class="flex flex-col gap-2 max-w-[120px]">
+            <div class="w-full bg-stroke rounded-[16px] h-1.5">
+              <div
+                [ngClass]="{
+                  'bg-[#8BC34A]':
+                    row.quality.percentage > 0 && row.quality.percentage <= 39,
+                  'bg-[#FFA940]':
+                    row.quality.percentage >= 40 &&
+                    row.quality.percentage <= 89,
+                  'bg-[#F44336]': row.quality.percentage > 89
+                }"
+                class="h-1.5 rounded-[16px]"
+                [style]="'width: ' + row.quality.percentage + '%'"
+              ></div>
+            </div>
+            <div
+              class="flex items-center gap-[10px] justify-center"
+              [ngClass]="{
+                'text-[#8BC34A]':
+                  row.quality.percentage > 0 && row.quality.percentage <= 39,
+                'text-[#FFA940]':
+                  row.quality.percentage >= 40 && row.quality.percentage <= 89,
+                'text-[#F44336]': row.quality.percentage > 89
+              }"
+            >
+              <span>{{ row.quality.count }}</span>
+              <span>{{ "customers.customerTable.orders" | translate }}</span>
+              <span>{{ row.quality.percentage }}%</span>
+            </div>
+          </div>
+        </td>
+        <td class="text-[12px] text-p-text">
+          <div class="flex flex-col gap-2 max-w-[120px]">
+            <div class="w-full bg-stroke rounded-[16px] h-1.5">
+              <div
+                [ngClass]="{
+                  'bg-[#1773B5]': row.reverse_orders.percentage > 49,
+                  'bg-[#C1810B]':
+                    row.reverse_orders.percentage >= 0 &&
+                    row.reverse_orders.percentage <= 49
+                }"
+                class="h-1.5 rounded-[16px]"
+                [style]="'width: ' + row.reverse_orders.percentage + '%'"
+              ></div>
+            </div>
+            <div
+              class="flex items-center gap-[10px] justify-center"
+              [ngClass]="{
+                'text-[#1773B5]': row.reverse_orders.percentage > 49,
+                'text-[#C1810B]':
+                  row.reverse_orders.percentage >= 0 &&
+                  row.reverse_orders.percentage <= 49
+              }"
+            >
+              <span>{{ row.reverse_orders.type }}</span>
+              <span>{{ row.reverse_orders.percentage }}%</span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span
+            class="px-1 py-[5px] rounded-[4px] text-[14px] font-medium leading-[120%]"
+            [ngClass]="{
+              'bg-[#E8F5E9] text-[#4CAF50]': row.status === 'active',
+              'bg-[#FFEBEE] text-[#D32F2F]': row.status === 'stopped'
+            }"
+          >
+            {{ row.status_label }}
+          </span>
+        </td>
+        <td class="text-[12px] text-p-text">
+          <ng-container>
+            <span class="mb-0 flex items-start flex-col">
+              <span
+                class="text-p-text font-medium text-[12px] leading-[120%]"
+                >{{ row.created_date_at | date : "dd-MM-yyyy" }}</span
+              >
+              <span class="text-hs-text font-normal leading-[120%]">{{
+                row.created_date_at | date : "shortTime"
+              }}</span>
+            </span>
+          </ng-container>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <!-- <td [attr.colspan]="8">
+          <div class="flex justify-center items-center p-4 w-full">
+            Get started by adding your first customer!
+          </div>
+        </td> -->
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+    [rows]="rowsPerPage"
+    [totalRecords]="totalRecords"
+    [pageLinkSize]="5"
+    (onPageChange)="onPageChange($event)"
+    [first]="(currentPage - 1) * rowsPerPage"
+    styleClass="mt-4"
+  ></p-paginator>
+</div>

@@ -1,0 +1,123 @@
+<section class="login-page bg-screen">
+  <section class="grid grid-cols-1 md:grid-cols-2 min-h-[100vh]">
+    <section class="hidden md:block h-full">
+      <div class="relative h-full w-full overflow-hidden">
+        <div
+          class="absolute inset-0 z-10"
+          style="
+            background: linear-gradient(
+              180deg,
+              transparent,
+              rgba(230, 82, 72, 0.25) 16.36%,
+              #092d47 106.22%
+            );
+          "
+        ></div>
+        <img
+          src="assets/images/pages/auth/login_screen.jpg"
+          alt="Auth background"
+          class="h-full w-full object-cover object-center scale-[1.1] transform transition-transform duration-500 ease-out absolute inset-0 z-0"
+        />
+        <div
+          class="absolute inset-0 z-20 flex flex-col justify-end items-center text-white px-6 text-center gap-4 mb-10"
+        >
+          <p
+            class="font-medium text-[18px] lg:text-[26px] leading-[120%] text-white"
+          >
+            {{ "auth.login.allYourShippingNeeds" | translate }}
+          </p>
+          <h1
+            class="font-bold text-[28px] lg:text-[40px] leading-[120%] text-t-header"
+          >
+            {{ "auth.login.onePlatformTotalControl" | translate }}
+          </h1>
+          <p
+            class="font-medium text-[12px] lg:text-[16px] leading-[120%] max-w-[600px] text-hover mb-4"
+          >
+            {{ "auth.login.fromManagingDailyOrders" | translate }}
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="lg:pt-12 lg:pb-[60px] lg:px-[54px] pt-8 pb-[40px] px-8">
+      <header class="flex flex-col gap-6 justify-center items-center mb-12">
+        <img src="assets/images/pages/logo.svg" width="104px" height="58px" />
+        <h1
+          class="font-bold text-[22px] lg:text-[32px] leading-[120%] text-p-text"
+        >
+          {{ "auth.register.createYourTredoAccount" | translate }}
+        </h1>
+        <p
+          class="font-normal text-[12px] lg:text-[16px] leading-[120%] text-hs-text"
+        >
+          {{ "auth.register.joinOurPlatform" | translate }}
+        </p>
+      </header>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <section class="flex flex-col">
+          <section class="flex flex-col">
+            <section>
+              <div>
+                <div class="mt-5">
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.email" | translate }} *
+                    </label>
+                    <div class="relative">
+                      <input
+                        formControlName="login"
+                        [ngClass]="{
+                          'border-primary-danger focus:outline-primary-danger':
+                            validateControl('login'),
+                          'border-stroke-heavy focus:outline-primary-light':
+                            !validateControl('login')
+                        }"
+                        type="email"
+                        placeholder="{{
+                          'auth.register.enterYourEmail' | translate
+                        }}"
+                        class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                      />
+                      <i
+                        *ngIf="validateControl('login')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                      ></i>
+                    </div>
+                    <div
+                      *ngIf="validateControl('login')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      <ng-container *ngIf="loginForm.get('login')?.errors?.['required']">{{ "auth.register.emailErrorMsg" | translate }}</ng-container>
+                      <ng-container *ngIf="loginForm.get('login')?.errors?.['email']">{{ "auth.register.emailInvalidErrorMsg" | translate }}</ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="submit_section mt-8">
+              <button
+                type="submit"
+                class="w-full bg-primary text-screen mb-6 px-[24px] hover:bg-primary-dark text-[16px] font-medium py-[14px] rounded-[8px] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {{ "auth.login.login" | translate }}
+              </button>
+
+              <p
+                class="text-center text-hs-text text-[16px] font-normal flex justify-between"
+              >
+                <a
+                  routerLink="/register"
+                  class="text-primary font-medium ms-1 hover:text-primary-hover"
+                >
+                  {{ "auth.login.registerANewAccount" | translate }}
+                </a>
+              </p>
+            </section>
+          </section>
+        </section>
+      </form>
+    </section>
+  </section>
+</section>

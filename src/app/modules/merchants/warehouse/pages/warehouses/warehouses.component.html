@@ -1,0 +1,114 @@
+<section>
+  <header class="bg-white rounded-[12px] py-4 px-8 warehouse-header">
+    <p-breadcrumb [model]="items" [home]="home" />
+    <section
+      class="mt-2 flex flex-col gap-2 md:flex-row md:gap-0 justify-between items-start md:items-center"
+    >
+      <h2 class="text-p-text text-[28px] font-medium leading-[120%]">
+        {{ "warehouses.title" | translate }}
+      </h2>
+      <div class="flex justify-end w-full">
+        <button
+          (click)="addNewWarehouse()"
+          pButton
+          type="button"
+          label="{{ 'warehouses.addNewWarehouse' | translate }}"
+          icon="pi pi-plus"
+          class="text-white bg-primary"
+        ></button>
+      </div>
+    </section>
+  </header>
+
+  <!-- الكروت -->
+  <section
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[22px] w-full my-6"
+  >
+    <article
+      class="bg-white rounded-[12px] w-full col-span-1 p-4 flex justify-between"
+      *ngFor="let item of articles"
+    >
+      <div class="flex flex-col">
+        <span class="text-p-text text-[1rem] font-medium leading-[120%]">{{
+          item.title
+        }}</span>
+        <span
+          class="my-[10px] text-p-text-2 text-[24px] font-medium leading-[120%]"
+          >{{ item.total }}</span
+        >
+        <span class="text-hs-text text-[14px] font-normal leading-[120%]">{{
+          item.desc
+        }}</span>
+      </div>
+      <div
+        class="rounded-[12px] p-[10px] h-fit"
+        [style.background-color]="item.background"
+      >
+        <img [src]="item.icon" />
+      </div>
+    </article>
+  </section>
+
+  <!-- الجدول -->
+  <section class="w-full rounded-[12px] bg-white">
+    <app-warehouses-table></app-warehouses-table>
+  </section>
+
+  <!-- إضافة مخزن -->
+  <!-- <app-add-warehouse [(visible)]="showAddWarehouseDialog"></app-add-warehouse> -->
+  <app-add-warehouse [(visible)]="showAddWarehouseDialog"></app-add-warehouse>
+  <app-add-warehouse
+    [(visible)]="showEditWarehouseDialog"
+    [warehouseId]="editWarehouseId"
+    (visibleChange)="onEditDialogHide()"
+  ></app-add-warehouse>
+</section>
+
+<!-- الـ Drawer -->
+<p-drawer
+  [(visible)]="drawerVisible"
+  position="right"
+  [modal]="true"
+  [style]="{ width: '900px', maxWidth: '100%' }"
+  [closable]="false"
+  (onHide)="closeDrawer()"
+>
+  <ng-template #header>
+    <div class="flex items-start gap-6">
+      <div class="flex items-center gap-4 bg-screen p-2 rounded-full mt-1">
+        <i
+          class="pi pi-arrow-left text-p-text text-xl cursor-pointer rtl:rotate-180"
+          (click)="closeDrawer()"
+        ></i>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span
+          class="font-bold text-p-text text-[32px] leading-[120%] tracking-[0%]"
+          >{{ "warehouses.warehouseTable.warehouseID" | translate
+          }}{{ ": " + (drawerId ?? "") }}</span
+        >
+        <div
+          class="px-3 py-1 rounded-lg text-sm font-medium w-fit"
+          [ngClass]="{
+            'bg-success-bg text-success': warehouseStatusValue === 'active',
+            'bg-[#FFEBEE] text-[#D32F2F]': warehouseStatusValue === 'stopped'
+          }"
+        >
+          {{ warehouseStatusValue }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <p-confirmDialog></p-confirmDialog>
+
+  @if (drawerVisible && drawerId) {
+  <!-- <app-view-warehouse [id]="drawerId"></app-view-warehouse> -->
+  <app-view-warehouse
+    (wareHouseStatus)="warehouseStatusValue = $event"
+    [id]="drawerId"
+    (editWarehouse)="onEditWarehouse($event)"
+    (deleteWarehouseEvent)="onDeleteWarehouse($event)"
+  >
+  </app-view-warehouse>
+  }
+</p-drawer>

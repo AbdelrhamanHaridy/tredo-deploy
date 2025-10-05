@@ -1,0 +1,647 @@
+<section class="register-page bg-screen">
+  <section class="grid grid-cols-1 md:grid-cols-2 min-h-[100vh]">
+    <section class="hidden md:block h-full">
+      <div class="relative h-full w-full overflow-hidden">
+        <div
+          class="absolute inset-0 z-10"
+          style="
+            background: linear-gradient(
+              180deg,
+              transparent,
+              rgba(230, 82, 72, 0.25) 16.36%,
+              #092d47 106.22%
+            );
+          "
+        ></div>
+        <img
+          src="assets/images/pages/auth/main_screen.jpg"
+          alt="Auth background"
+          class="h-full w-full object-cover object-center scale-150 transform transition-transform duration-500 ease-out absolute inset-0 z-0"
+        />
+        <div
+          class="absolute inset-0 z-20 flex flex-col justify-end items-center text-white px-6 text-center gap-4 mb-10"
+        >
+          <p
+            class="font-medium text-[18px] lg:text-[26px] leading-[120%] text-white"
+          >
+            {{ "auth.register.weOfferTheBest" | translate }}
+          </p>
+          <h1
+            class="font-bold text-[28px] lg:text-[40px] leading-[120%] text-t-header"
+          >
+            {{ "auth.register.takeControlOfYourShipping" | translate }}
+          </h1>
+          <p
+            class="font-medium text-[12px] lg:text-[16px] leading-[120%] max-w-[600px] text-hover mb-4"
+          >
+            {{ "auth.register.oneSystemToChooseCouriers" | translate }}
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="lg:pt-12 lg:pb-[60px] lg:px-[54px] pt-8 pb-[40px] px-8">
+      <header class="flex flex-col gap-6 justify-center items-center mb-12">
+        <img src="assets/images/pages/logo.svg" width="104px" height="58px" />
+        <h1
+          class="font-bold text-[22px] lg:text-[32px] leading-[120%] text-p-text"
+        >
+          {{ "auth.register.createYourTredoAccount" | translate }}
+        </h1>
+        <p
+          class="font-normal text-[12px] lg:text-[16px] leading-[120%] text-hs-text"
+        >
+          {{ "auth.register.joinOurPlatform" | translate }}
+        </p>
+      </header>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <section class="flex flex-col">
+          <section class="flex flex-col gap-12">
+            <section>
+              <h1
+                (click)="toggleSection('personalDetails')"
+                class="mb-3 font-medium text-[16px] lg:text-[24px] leading-[120%] text-p-text cursor-pointer flex justify-between items-center"
+              >
+                <span>
+                  {{ "auth.register.personalDetails" | translate }}
+                </span>
+                <img
+                  [@tabAnimation]
+                  *ngIf="!showSections.personalDetails"
+                  src="assets/icons/arrow.svg"
+                  class="inline-block pe-4"
+                />
+              </h1>
+              <hr class="h-0 border border-h-stroke mb-3" />
+              <div *ngIf="showSections.personalDetails" [@tabAnimation]>
+                <div class="flex lg:gap-10 gap-5 flex-col lg:flex-row">
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.username" | translate }} *
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="text"
+                        formControlName="username"
+                        [ngClass]="{
+                          'border-primary-danger focus:outline-primary-danger':
+                            validateControl('username'),
+                          'border-stroke-heavy focus:outline-primary-light':
+                            !validateControl('username')
+                        }"
+                        placeholder="{{ 'auth.register.username' | translate }}"
+                        class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                      />
+                      <i
+                        *ngIf="validateControl('username')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                      ></i>
+                    </div>
+
+                    <div
+                      *ngIf="validateControl('username')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      <ng-container
+                        *ngIf="registerForm.get('username')?.errors?.['required']"
+                        >{{
+                          "auth.register.usernameErrorMsg" | translate
+                        }}</ng-container
+                      >
+                      <ng-container
+                        *ngIf="registerForm.get('username')?.errors?.['minlength']"
+                        >{{
+                          "auth.register.usernameErrorMsgMinLength" | translate
+                        }}</ng-container
+                      >
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.fullName" | translate }} *
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="text"
+                        formControlName="name"
+                        placeholder="{{
+                          'auth.register.enterYourFullName' | translate
+                        }}"
+                        [ngClass]="{
+                          'border-primary-danger focus:outline-primary-danger':
+                            validateControl('name'),
+                          'border-stroke-heavy focus:outline-primary-light':
+                            !validateControl('name')
+                        }"
+                        class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                      />
+                      <i
+                        *ngIf="validateControl('name')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                      ></i>
+                    </div>
+                    <div
+                      *ngIf="validateControl('name')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      {{ "auth.register.fullNameErrorMsg" | translate }}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex lg:gap-10 gap-5 flex-col lg:flex-row mt-5">
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.country" | translate }}
+                    </label>
+                    <div class="relative w-full">
+                      <select
+                        id="countries"
+                        formControlName="country_id"
+                        [ngClass]="{
+                          'border-primary-danger':
+                            validateControl('country_id'),
+                          'border-stroke-heavy': !validateControl('country_id')
+                        }"
+                        class="w-full text-hs-text appearance-none border bg-screen rounded-[8px] focus:outline-none px-4 py-3 pe-10 font-medium text-[14px] leading-[20px]"
+                      >
+                        <option value="" disabled selected hidden>
+                          {{ "auth.register.chooseCountry" | translate }}
+                        </option>
+                        @for (item of countries; track item) {
+                        <option [value]="item.id">{{ item.name }}</option>
+                        } @empty {
+                        <option>{{ "auth.register.noItemsFound" }}</option>
+                        }
+                      </select>
+                      <i
+                        *ngIf="validateControl('country_id')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+                      ></i>
+
+                      <img
+                        src="assets/icons/arrow.svg"
+                        class="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                      />
+                    </div>
+                    <div
+                      *ngIf="validateControl('country_id')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      {{ "auth.register.countryErrorMsg" | translate }}
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.mobileNumber" | translate }} *
+                    </label>
+                    <div class="relative">
+                      <input
+                        formControlName="phone"
+                        maxlength="11"
+                        type="text"
+                        [ngClass]="{
+                          'border-primary-danger focus:outline-primary-danger':
+                            validateControl('phone'),
+                          'border-stroke-heavy focus:outline-primary-light':
+                            !validateControl('phone')
+                        }"
+                        placeholder="{{
+                          'auth.register.enterYourMobileNumber' | translate
+                        }}"
+                        class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                      />
+                      <i
+                        *ngIf="validateControl('phone')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                      ></i>
+                    </div>
+                    <div
+                      *ngIf="validateControl('phone')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      <span
+                        class="block"
+                        *ngIf="registerForm.get('phone')?.errors?.['required']"
+                        >{{
+                          "auth.register.mobileNumberErrorMsg" | translate
+                        }}</span
+                      >
+                      <span
+                        class="block"
+                        *ngIf="registerForm.get('phone')?.errors?.['pattern']"
+                        >{{
+                          "auth.register.patternNumberErrorMsg" | translate
+                        }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.email" | translate }} *
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="email"
+                        formControlName="email"
+                        [ngClass]="{
+                          'border-primary-danger focus:outline-primary-danger':
+                            validateControl('email'),
+                          'border-stroke-heavy focus:outline-primary-light':
+                            !validateControl('email')
+                        }"
+                        placeholder="{{
+                          'auth.register.enterYourEmail' | translate
+                        }}"
+                        class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                      />
+                      <i
+                        *ngIf="validateControl('email')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                      ></i>
+                    </div>
+                    <div
+                      *ngIf="validateControl('email')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      <ng-container
+                        *ngIf="registerForm.get('email')?.errors?.['required']"
+                        >{{
+                          "auth.register.emailErrorMsg" | translate
+                        }}</ng-container
+                      >
+                      <ng-container
+                        *ngIf="registerForm.get('email')?.errors?.['email']"
+                      >
+                        {{ "auth.register.emailInvalidErrorMsg" | translate }}
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section *ngIf="registerForm.get('type')?.value === 'business'">
+              <h1
+                (click)="
+                  showSections.businessDetails = !showSections.businessDetails
+                "
+                class="mb-3 font-medium text-[16px] lg:text-[24px] leading-[120%] text-p-text cursor-pointer flex justify-between items-center"
+              >
+                <span>
+                  {{ "auth.register.businessDetails" | translate }}
+                </span>
+                <img
+                  [@tabAnimation]
+                  *ngIf="!showSections.businessDetails"
+                  src="assets/icons/arrow.svg"
+                  class="inline-block pe-4"
+                />
+              </h1>
+              <hr class="h-0 border border-h-stroke mb-3" />
+              <div [@tabAnimation] *ngIf="showSections.businessDetails">
+                <div class="flex flex-col gap-[7px] w-full">
+                  <label
+                    class="font-medium text-[14px] leading-[120%] text-p-text"
+                  >
+                    {{ "auth.register.businessName" | translate }} *
+                  </label>
+                  <div class="relative">
+                    <input
+                      formControlName="business_name"
+                      type="text"
+                      [ngClass]="{
+                        'border-primary-danger focus:outline-primary-danger':
+                          validateControl('business_name'),
+                        'border-stroke-heavy focus:outline-primary-light':
+                          !validateControl('business_name')
+                      }"
+                      placeholder="{{
+                        'auth.register.businessName' | translate
+                      }}"
+                      class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                    />
+                    <i
+                      *ngIf="validateControl('business_name')"
+                      class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                    ></i>
+                  </div>
+                  <div
+                    *ngIf="validateControl('business_name')"
+                    class="text-primary-danger text-[12px] font-medium ms-2"
+                  >
+                    {{ "auth.register.businessNameErrorMsg" | translate }}
+                  </div>
+                </div>
+                <div class="flex lg:gap-10 gap-5 flex-col lg:flex-row mt-5">
+                  <ng-container formGroupName="links">
+                    <div class="flex flex-col gap-[7px] w-full">
+                      <label
+                        class="font-medium text-[14px] leading-[120%] text-p-text"
+                      >
+                        {{
+                          "auth.register.websiteOrFacebookPageName" | translate
+                        }}
+                        *
+                      </label>
+                      <div class="relative">
+                        <input
+                          type="text"
+                          formControlName="name"
+                          [ngClass]="{
+                            'border-primary-danger focus:outline-primary-danger':
+                              validateLinkControl('name'),
+                            'border-stroke-heavy focus:outline-primary-light':
+                              !validateLinkControl('name')
+                          }"
+                          placeholder="{{
+                            'auth.register.enterYourUrlName' | translate
+                          }}"
+                          class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                        />
+                        <i
+                          *ngIf="validateLinkControl('name')"
+                          class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                        ></i>
+                      </div>
+                      <div
+                        *ngIf="validateLinkControl('name')"
+                        class="text-primary-danger text-[12px] font-medium ms-2"
+                      >
+                        {{
+                          "auth.register.websiteOrFacebookPageNameErrorMsg"
+                            | translate
+                        }}
+                      </div>
+                    </div>
+                    <div class="flex flex-col gap-[7px] w-full">
+                      <label
+                        class="font-medium text-[14px] leading-[120%] text-p-text"
+                      >
+                        {{ "auth.register.websiteOrFacebookPage" | translate }}
+                        *
+                      </label>
+                      <div class="relative">
+                        <input
+                          type="text"
+                          formControlName="url"
+                          [ngClass]="{
+                            'border-primary-danger focus:outline-primary-danger':
+                              validateLinkControl('url'),
+                            'border-stroke-heavy focus:outline-primary-light':
+                              !validateLinkControl('url')
+                          }"
+                          placeholder="{{
+                            'auth.register.enterYourUrl' | translate
+                          }}"
+                          class="w-full font-normal bg-screen border rounded-[8px] px-4 py-3 placeholder:text-hs-text"
+                        />
+                        <i
+                          *ngIf="validateLinkControl('url')"
+                          class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-3"
+                        ></i>
+                      </div>
+                      <div
+                        *ngIf="validateLinkControl('url')"
+                        class="text-primary-danger text-[12px] font-medium ms-2"
+                      >
+                        <ng-container
+                          *ngIf="
+                          registerForm
+                            .get('links')
+                            ?.get('url')
+                            ?.errors?.['required']
+                        "
+                          >{{
+                            "auth.register.websiteOrFacebookPageErrorMsg"
+                              | translate
+                          }}</ng-container
+                        >
+                        <ng-container
+                          *ngIf="registerForm.get('links')?.get('url')?.errors?.['pattern']"
+                        >
+                          {{
+                            "auth.register.websiteOrFacebookPageErrorMsgInvalid"
+                              | translate
+                          }}
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="mt-5">
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.industry" | translate }} *
+                    </label>
+                    <div class="relative w-full">
+                      <select
+                        formControlName="industry_id"
+                        [ngClass]="{
+                          'border-primary-danger':
+                            validateControl('industry_id'),
+                          'border-stroke-heavy': !validateControl('industry_id')
+                        }"
+                        id="industry_id"
+                        class="w-full text-hs-text appearance-none border bg-screen rounded-[8px] px-4 py-3 pe-10 focus:outline-none font-medium text-[14px] leading-[20px]"
+                      >
+                        <option value="" disabled selected hidden>
+                          {{ "auth.register.chooseIndustry" | translate }}
+                        </option>
+                        @for (item of business_industry; track item) {
+                        <option [value]="item.id">{{ item.name }}</option>
+                        } @empty {
+                        <div>{{ "auth.register.noItemsFound" }}</div>
+                        }
+                      </select>
+                      <i
+                        *ngIf="validateControl('industry_id')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+                      ></i>
+                      <img
+                        src="assets/icons/arrow.svg"
+                        class="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                      />
+                    </div>
+                    <div
+                      *ngIf="validateControl('industry_id')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      {{ "auth.register.industryErrorMsg" | translate }}
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  <div class="flex flex-col gap-[7px] w-full">
+                    <label
+                      class="font-medium text-[14px] leading-[120%] text-p-text"
+                    >
+                      {{ "auth.register.avg_monthly_orders" | translate }} *
+                    </label>
+                    <div class="relative w-full">
+                      <select
+                        formControlName="average_order"
+                        id="avg_orders"
+                        [ngClass]="{
+                          'border-primary-danger':
+                            validateControl('average_order'),
+                          'border-stroke-heavy':
+                            !validateControl('average_order')
+                        }"
+                        class="w-full text-hs-text appearance-none border bg-screen rounded-[8px] px-4 py-3 pe-10 focus:outline-none font-medium text-[14px] leading-[20px]"
+                      >
+                        <option value="" disabled selected hidden>
+                          {{ "auth.register.chooseAvgOrders" | translate }}
+                        </option>
+                        @for (item of avg_orders; track item) {
+                        <option [value]="item.value">{{ item.label }}</option>
+                        } @empty {
+                        <div>{{ "auth.register.noItemsFound" }}</div>
+                        }
+                      </select>
+                      <i
+                        *ngIf="validateControl('average_order')"
+                        class="pi pi-info-circle !text-[24px] text-primary-danger absolute top-1/2 transform -translate-y-1/2 end-10"
+                      ></i>
+                      <img
+                        src="assets/icons/arrow.svg"
+                        class="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                      />
+                    </div>
+                    <div
+                      *ngIf="validateControl('average_order')"
+                      class="text-primary-danger text-[12px] font-medium ms-2"
+                    >
+                      {{
+                        "auth.register.avg_monthly_ordersErrorMsg" | translate
+                      }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="type_section">
+              <h1
+                class="mb-3 font-medium text-[16px] lg:text-[24px] leading-[120%] text-p-text"
+              >
+                {{ "auth.register.accountType" | translate }}
+              </h1>
+              <hr class="h-0 border border-h-stroke mb-6" />
+
+              <div class="flex flex-col gap-4">
+                <label
+                  [ngClass]="{
+                    'bg-primary-lighter':
+                      registerForm.get('type')?.value === 'business',
+                    'bg-stroke': registerForm.get('type')?.value !== 'business'
+                  }"
+                  class="flex border-stroke-heavy items-center gap-3 px-4 py-[19px] border rounded-[10px] cursor-pointer transition-all duration-200"
+                >
+                  <input
+                    type="radio"
+                    name="type"
+                    value="business"
+                    formControlName="type"
+                    class="accent-p-text w-[20px] h-[20px]"
+                  />
+                  <span
+                    [ngClass]="{
+                      'text-p-text font-bold ':
+                        registerForm.get('type')?.value === 'business',
+                      'text-hs-text font-normal ':
+                        registerForm.get('type')?.value !== 'business'
+                    }"
+                    class="md:text-[16px] text-[14px]"
+                  >
+                    {{ "auth.register.businessAccount" | translate }}
+                  </span>
+                </label>
+
+                <label
+                  [ngClass]="{
+                    'bg-primary-lighter':
+                      registerForm.get('type')?.value === 'personal',
+                    'bg-stroke': registerForm.get('type')?.value !== 'personal'
+                  }"
+                  class="flex border-stroke-heavy cursor-not-allowed items-center gap-3 px-4 py-[19px] border rounded-[10px] transition-all duration-200"
+                >
+                  <input
+                    type="radio"
+                    class="accent-p-text w-[20px] h-[20px]"
+                    [disabled]="true"
+                  />
+                  <span
+                    [ngClass]="{
+                      'text-p-text font-bold ':
+                        registerForm.get('type')?.value === 'personal',
+                      'text-hs-text font-normal ':
+                        registerForm.get('type')?.value !== 'personal'
+                    }"
+                    class="md:text-[16px] text-[14px]"
+                  >
+                    {{ "auth.register.personalAccount" | translate }}
+                  </span>
+                </label>
+              </div>
+            </section>
+            <section class="submit_section mt-8">
+              <div class="flex flex-wrap items-center gap-2 mb-6 min-h-[24px]">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  formControlName="terms_accepted"
+                  class="mt-[2px] w-[18px] h-[18px] accent-p-text"
+                />
+                <label
+                  for="terms"
+                  class="text-hs-text text-[14px] md:text-[16px] font-medium leading-[120%]"
+                >
+                  {{ "auth.register.agreeToTerms" | translate }}
+                  <a
+                    class="text-primary hover:text-primary-hover hover:border-primary-hover border-b border-primary ms-1"
+                  >
+                    {{ "auth.register.termsAndServices" | translate }}
+                  </a>
+                </label>
+                <div
+                  *ngIf="validateControl('terms_accepted')"
+                  class="text-primary-danger text-[12px] font-medium ms-2 w-full"
+                >
+                  {{ "auth.register.termsErrorMsg" | translate }}
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-primary text-screen mb-6 px-[24px] hover:bg-primary-dark text-[16px] font-medium py-[14px] rounded-[8px] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {{ "auth.register.createAccount" | translate }}
+              </button>
+
+              <p class="text-center text-hs-text text-[16px] font-normal">
+                {{ "auth.register.alreadyHaveAccount" | translate }}
+                <a
+                  routerLink="/login"
+                  class="text-primary font-medium ms-1 hover:text-primary-hover"
+                >
+                  {{ "auth.register.signIn" | translate }}
+                </a>
+              </p>
+            </section>
+          </section>
+        </section>
+      </form>
+    </section>
+  </section>
+</section>

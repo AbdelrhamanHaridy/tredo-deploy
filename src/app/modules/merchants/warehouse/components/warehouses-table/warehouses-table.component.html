@@ -1,0 +1,379 @@
+<div class="warehouses-table px-8 py-6">
+  <section class="flex flex-wrap justify-between items-center pb-4 gap-2">
+    <div
+      class="border border-stroke py-2 px-4 rounded-[6px] flex items-center gap-2 h-[40px] cursor-pointer"
+      (click)="openFilters()"
+    >
+      <i
+        class="pi pi-chevron-down text-primary"
+        [ngClass]="{
+          'rotate-180': showFilters,
+          'rotate-0': !showFilters
+        }"
+      ></i>
+      <span
+        class="text-primary font-medium text-[14px] leading-[120%] tracking-[0px]"
+        >{{ "warehouses.warehouseTable.showFilters" | translate }}</span
+      >
+    </div>
+    <div class="max-w-[280px] w-full relative h-[40px]">
+      <input
+        class="border indent-8 border-stroke w-full py-3 h-full px-4 rounded-[6px] flex items-center gap-2 focus:outline-none placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%] tracking-[0px]"
+        placeholder="{{
+          'warehouses.warehouseTable.searchWarehouses' | translate
+        }}"
+        [ngModel]="searchParams.search"
+        (ngModelChange)="onSearchInput($event)"
+      />
+      <img
+        src="assets/icons/search.svg"
+        class="absolute top-1/2 start-4 -translate-y-1/2"
+      />
+    </div>
+  </section>
+  <section
+    *ngIf="showFilters"
+    class="mb-4 border border-stroke rounded-[8px] bg-white"
+  >
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 p-4 gap-y-6 border-b border-stroke pb-4"
+    >
+      <!-- Name -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="warehouseName"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "warehouses.warehouseSearch.name" | translate }}</label
+        >
+        <input
+          id="warehouseName"
+          type="text"
+          [(ngModel)]="searchParams.search"
+          class="border border-stroke rounded-[6px] py-2 px-3 focus:outline-primary-light placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%]"
+          placeholder="{{
+            'warehouses.warehouseSearch.searchByName' | translate
+          }}"
+        />
+      </div>
+      <!-- Phone Number -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="phoneNumber"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "warehouses.warehouseSearch.phoneNumber" | translate }}</label
+        >
+        <input
+          id="phoneNumber"
+          [(ngModel)]="searchParams.phone"
+          type="text"
+          class="border border-stroke rounded-[6px] py-2 px-3 focus:outline-primary-light placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%]"
+          placeholder="{{
+            'warehouses.warehouseSearch.searchByPhone' | translate
+          }}"
+        />
+      </div>
+      <!-- Email -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="email"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "warehouses.warehouseSearch.email" | translate }}</label
+        >
+        <input
+          id="email"
+          [(ngModel)]="searchParams.email"
+          type="text"
+          class="border border-stroke rounded-[6px] py-2 px-3 focus:outline-primary-light placeholder:text-hs-text placeholder:font-normal text-[14px] leading-[120%]"
+          placeholder="{{
+            'warehouses.warehouseSearch.searchByEmail' | translate
+          }}"
+        />
+      </div>
+      <!-- From Date -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="fromDate"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "warehouses.warehouseSearch.fromDate" | translate }}</label
+        >
+        <!-- [(ngModel)]="searchParams.from_date" -->
+        <div class="w-full relative">
+          <p-calendar
+            [placeholder]="'warehouses.warehouseSearch.selectDate' | translate"
+            class="w-full calender-full"
+            [(ngModel)]="searchParams.created_date_at"
+            dateFormat="dd-mm-yy"
+            inputStyleClass="my-custom-calendar-border"
+          ></p-calendar>
+          <img
+            src="assets/icons/calendar.svg"
+            alt="calender"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+      </div>
+      <!-- To Date -->
+      <div class="flex flex-col gap-1">
+        <label
+          for="toDate"
+          class="text-[14px] font-medium leading-[120%] text-p-text"
+          >{{ "warehouses.warehouseSearch.toDate" | translate }}</label
+        >
+        <div class="w-full relative">
+          <p-calendar
+            [(ngModel)]="searchParams.to_date"
+            dateFormat="dd-mm-yy"
+            [placeholder]="'warehouses.warehouseSearch.selectDate' | translate"
+            class="w-full calender-full"
+            inputStyleClass="my-custom-calendar-border"
+          ></p-calendar>
+          <img
+            src="assets/icons/calendar.svg"
+            alt="calender"
+            class="absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3"
+          />
+        </div>
+      </div>
+      <!-- Area -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.area" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="areas"
+            [(ngModel)]="searchParams.area_id"
+            [placeholder]="
+              'warehouses.warehouseForm.areaPlaceholder' | translate
+            "
+            optionLabel="name"
+            optionValue="id"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+        </div>
+      </div>
+      <!-- Regions (Governator) -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="font-medium text-[14px] leading-[120%] text-p-text">
+          {{ "warehouses.warehouseForm.region" | translate }} *
+        </label>
+        <div class="relative">
+          <p-dropdown
+            [options]="governorates"
+            [(ngModel)]="searchParams.governorate_id"
+            [placeholder]="
+              'warehouses.warehouseForm.regionPlaceholder' | translate
+            "
+            optionLabel="name"
+            optionValue="id"
+            class="w-full border-stroke rounded-[8px] py-1"
+            styleClass="my-custom-dropdown-border"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-end py-4 px-6 gap-4">
+      <button
+        (click)="onClear()"
+        class="bg-white border border-stroke text-primary flex gap-2 font-medium text-[14px] leading-[120%] px-4 py-2 rounded-[6px]"
+      >
+        <img src="assets/icons/filter.svg" class="w-4 h-4" />
+        <span>{{ "common.clear" | translate }}</span>
+      </button>
+      <button
+        (click)="onSearch()"
+        class="bg-primary border border-primary text-white flex font-medium text-[14px] gap-2 leading-[120%] px-4 py-2 rounded-[6px]"
+      >
+        <i class="pi pi-search text-white -mt-[2px]"></i>
+        <span>{{ "common.search" | translate }}</span>
+      </button>
+    </div>
+  </section>
+  <p-table
+    #dt
+    [value]="warehouses"
+    [tableStyle]="{
+      'min-width': '100%',
+      border: '1px solid #E6E6E6'
+    }"
+    responsiveLayout="scroll"
+    class="table-new"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">
+          <div class="flex gap-1">#ID <p-sortIcon field="id"></p-sortIcon></div>
+        </th>
+        <th
+          pSortableColumn="name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "warehouses.warehouseTable.warehouseName" | translate }}
+            <p-sortIcon field="name"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="responsible_manger_name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "warehouses.warehouseTable.managerName" | translate }}
+            <p-sortIcon field="responsible_manger_name"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="email"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "warehouses.warehouseTable.email" | translate }}
+            <p-sortIcon field="email"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="governorate.name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1">
+            {{ "warehouses.warehouseTable.region" | translate }}
+            <p-sortIcon field="governorate.name"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="city.name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1">
+            {{ "warehouses.warehouseTable.city" | translate }}
+            <p-sortIcon field="city.name"></p-sortIcon>
+          </div>
+        </th>
+        <th
+          pSortableColumn="area.name"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1">
+            {{ "warehouses.warehouseTable.area" | translate }}
+            <p-sortIcon field="area.name"></p-sortIcon>
+          </div>
+        </th>
+
+        <th
+          pSortableColumn="status"
+          class="text-[12px] font-medium leading-[120%]"
+        >
+          <div class="flex gap-1 items-center">
+            {{ "warehouses.warehouseTable.status" | translate }}
+            <p-sortIcon field="status"></p-sortIcon>
+          </div>
+        </th>
+        <th class="text-[12px] font-medium leading-[120%]">
+          {{ "warehouses.warehouseTable.primary" | translate }}
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row>
+      <tr
+        [routerLink]="[
+          '/merchants/warehouses',
+          { outlets: { warehouse: [row.id] } }
+        ]"
+        class="hover:bg-gray-200 cursor-pointer"
+      >
+        <td class="text-[12px] text-p-text">{{ row.id }}</td>
+        <td class="text-[12px] text-p-text whitespace-nowrap">
+          <i class="pi pi-copy mr-2"></i> {{ row.name }}
+        </td>
+        <td class="text-[12px]">
+          <div class="flex flex-col gap-1">
+            <div class="text-p-text font-medium">
+              {{ row.responsible_manger_name }}
+            </div>
+            <div class="flex text-[12px] font-normal text-hs-text flex-col">
+              <div class="flex items-center">
+                <i class="pi pi-copy mr-1"></i> {{ row.phone }}
+              </div>
+              <div class="flex items-center" *ngIf="row.phone2">
+                <i class="pi pi-copy mr-1"></i> {{ row?.phone2 }}
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="text-[12px] text-p-text">{{ row.email }}</td>
+        <td class="text-[12px] text-p-text">
+          {{ row.country?.name }}
+          <ng-container *ngIf="row.governorate">
+            <span class="mb-0 flex items-center text-hs-text">
+              <i class="pi pi-map-marker mr-1"></i> {{ row.governorate.name }}
+            </span>
+          </ng-container>
+        </td>
+        <td class="text-[12px] text-p-text">{{ row.city.name }}</td>
+        <td class="text-[12px] text-p-text">
+          {{ row.area?.name }}
+          <ng-container *ngIf="row.region">
+            <span class="mb-0 flex items-center text-hs-text">
+              <i class="pi pi-map-marker mr-1"></i> {{ row.region }}
+            </span>
+          </ng-container>
+        </td>
+        <td>
+          <span
+            class="px-1 py-[5px] rounded-[4px] text-[14px] font-medium leading-[120%]"
+            [ngClass]="{
+              'bg-[#E8F5E9] text-[#4CAF50]': row.status === 'active',
+              'bg-[#FFEBEE] text-[#D32F2F]': row.status === 'stopped'
+            }"
+          >
+            {{ row.status_label }}
+          </span>
+        </td>
+        <td>
+          <button
+            class="cursor-pointer focus:outline-none px-4 py-2 rounded-[6px] font-medium text-[14px] leading-[120%]"
+            (click)="openPrimaryDialog(row.id); $event.stopPropagation()"
+            [ngClass]="{
+              'bg-[#FFCB2B] text-[#f7f7f7] border-0': row.is_primary,
+              'bg-stroke-heavy-100 border border-stroke text-primary':
+                !row.is_primary
+            }"
+          >
+            <ng-container *ngIf="row.is_primary">
+              {{ "warehouses.warehouseTable.primary" | translate }}
+            </ng-container>
+            <ng-container *ngIf="!row.is_primary">
+              {{ "warehouses.warehouseTable.setPrimary" | translate }}
+            </ng-container>
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <!-- <td [attr.colspan]="8">
+          <div class="flex justify-center items-center p-4 w-full">
+            Get started by adding your first warehouse!
+          </div>
+        </td> -->
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+    [rows]="rowsPerPage"
+    [totalRecords]="totalRecords"
+    [pageLinkSize]="5"
+    (onPageChange)="onPageChange($event)"
+    [first]="(currentPage - 1) * rowsPerPage"
+    styleClass="mt-4"
+  ></p-paginator>
+  <app-action-dialog
+    [config]="dialogConfig"
+    [(visible)]="dialogVisible"
+    (cancel)="handleDialogCancel()"
+    (confirm)="handleDialogConfirm()"
+  >
+  </app-action-dialog>
+</div>

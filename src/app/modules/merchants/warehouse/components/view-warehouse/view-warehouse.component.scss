@@ -1,0 +1,12 @@
+.accordion-content {
+  transition: max-height 0.3s ease-out, opacity 0.3s ease;
+  overflow: hidden;
+}
+.accordion-content.hidden {
+  max-height: 0;
+  opacity: 0;
+}
+.accordion-content:not(.hidden) {
+  max-height: 500px;
+  opacity: 1;
+}
